@@ -7,7 +7,8 @@ injection than assume it, and I write down the decisions and tradeoffs along the
 ## Featured project
 
 **[movie-recommendation-system](https://github.com/advaitsane/movie-recommendation-system)** rebuilds
-MongoDB's `mflix` sample monolith as five Spring Boot domain services behind an API gateway:
+MongoDB's `mflix` sample monolith as six Spring Boot services behind an API gateway, one of them an
+LLM movie assistant:
 - **Architecture:** a CQRS search read model fed by Kafka, an outbox for review events, and a
   recommendation service that blends content and collaborative signals and falls back when either
   is down.
@@ -17,17 +18,22 @@ MongoDB's `mflix` sample monolith as five Spring Boot domain services behind an 
   latency, OOM kills) found real gaps: a health check that missed a database outage, circuit
   breakers that could never open, and timeout budgets that didn't line up. Each gap is fixed and
   recorded in an [ADR](https://github.com/advaitsane/movie-recommendation-system/tree/main/docs/adr).
+- **See it run:** a [four-act demo](https://github.com/advaitsane/movie-recommendation-system/blob/main/docs/demo.md) (cold start to personal
+  recommendations, load, a killed dependency, the assistant) and a
+  [design review](https://github.com/advaitsane/movie-recommendation-system/blob/main/docs/design-review.md) of consistency, failure modes and what
+  breaks at 10x.
 - **Built in public:** the repo went up one
   [pull request per build step](https://github.com/advaitsane/movie-recommendation-system/pulls?q=is%3Apr+is%3Amerged),
   so the history shows how it was built and why.
 
-Stack: Java 25 · Spring Boot 4 · Spring Cloud Gateway · Resilience4j · Kafka · MongoDB (Atlas
-Search, vector search) · PostgreSQL · Redis · Docker · k6 · GitHub Actions
+Stack: Java 25 · Spring Boot 4 · Spring Cloud Gateway · Spring AI · Resilience4j · Kafka · MongoDB
+(Atlas Search, vector search) · PostgreSQL · Redis · OpenTelemetry · Grafana · Docker · k6 ·
+GitHub Actions
 
 ## Currently
 
-Moving movie-recommendation-system onto Kubernetes, replacing config-server and configured URLs
-with ConfigMaps and Service DNS, and recording each step in an ADR.
+Adding evaluations and a grounding check to the movie assistant, then moving the system to
+Kubernetes on EKS. Each step gets an ADR.
 
 ## Contact
 
